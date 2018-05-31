@@ -1,3 +1,5 @@
+import Player
+
 class Stratego:
     def __init__(self, size, player1, player2):
         self.size = size
@@ -86,7 +88,18 @@ class Stratego:
         else:
             return 0
 
+    def is_full(self):
+        for row in self.board:
+            for col in row:
+                if col == 0:
+                    return False
+        return True
+
     def play(self, player):
+        if self.is_full():
+            print("Koniec gry")
+            return
+
         for row_p in self.board:
             print(row_p)
         while True:
@@ -113,27 +126,8 @@ class Stratego:
             self.play(self.red_player)
 
 
-class HumanPlayer:
-    def __init__(self, id, name):
-        self.id = id
-        self.name = name
-        self.points = 0
-
-    def get_id(self):
-        return self.id
-
-    def get_name(self):
-        return self.name
-
-    def get_points(self):
-        return self.points
-
-    def add_points(self, points):
-        self.points += points
-
-
-player_red = HumanPlayer(1, input("Imie pierwszego gracza:"))
-player_blue = HumanPlayer(2, input("Imie drugiego gracza:"))
+player_red = Player(1, input("Imie pierwszego gracza:"), 'red')
+player_blue = Player(2, input("Imie drugiego gracza:"), 'blue')
 
 stratego = Stratego(8, player_red, player_blue)
 stratego.play(player_red)
