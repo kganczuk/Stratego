@@ -18,19 +18,94 @@ class Stratego:
         else:
             return False
 
+    def count_row(self, row):
+        points = 0
+        for col in range(self.size):
+            if self.board[row][col] == 0:
+                return 0
+            else:
+                points += 1
+
+        return points
+
+    def count_col(self, col):
+        points = 0
+        for row in range(self.size):
+            if self.board[row][col] == 0:
+                return 0
+            else:
+                points += 1
+
+        return points
+
+    def count_diagonal_right(self, row, col):
+        points = 0
+        ix, iy = row-1, col-1
+        while ix >= 0 and iy >= 0:
+            if self.board[ix][iy] == 0:
+                return 0
+            else:
+                points += 1
+            ix -= 1
+            iy -= 1
+
+        ix, iy = row+1, col+1
+        while ix < self.size and iy < self.size:
+            if self.board[ix][iy] == 0:
+                return 0
+            else:
+                points += 1
+            ix += 1
+            iy += 1
+
+        if points > 0:
+            return points+1
+        else:
+            return 0
+
+    def count_diagonal_left(self, row, col):
+        points = 0
+        ix, iy = row+1, col-1
+        while ix < self.size and iy >= 0:
+            if self.board[ix][iy] == 0:
+                return 0
+            ix += 1
+            iy -= 1
+
+        ix, iy = row-1, col+1
+        while ix >= 0 and iy < self.size:
+            if self.board[ix][iy] == 0:
+                return 0
+            else:
+                points += 1
+            ix -= 1
+            iy += 1
+
+        if points > 0:
+            return points+1
+        else:
+            return 0
+
     def play(self, player):
         for row_p in self.board:
             print(row_p)
         while True:
-            print("Ruch gracza:", player.get_name())
-            row, col = input("Wiersz:"), input("Kolumna:")
+            print("Ruch gracza:", player.get_name(), "ma punktów:", player.get_points())
             try:
-                if self.put(player, int(row), int(col)):
+                row, col = int(input("Wiersz:")), int(input("Kolumna:"))
+                if self.put(player, row, col):
                     break
                 else:
                     print("Wybierz inne miejsce.")
             except:
                 print("Zła wartość, jeszcze raz.")
+
+        points = self.count_row(row) + self.count_col(col) + \
+                 self.count_diagonal_left(row, col) + self.count_diagonal_right(row, col)
+
+        if points > 0:
+            player.add_points(points)
+            print("Gratulacje, zdobyłeś", points, "punktów.")
 
         if player == self.red_player:
             self.play(self.blue_player)
@@ -42,12 +117,19 @@ class HumanPlayer:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        self.points = 0
 
     def get_id(self):
         return self.id
 
     def get_name(self):
         return self.name
+
+    def get_points(self):
+        return self.points
+
+    def add_points(self, points):
+        self.points += points
 
 
 player_red = HumanPlayer(1, input("Imie pierwszego gracza:"))
