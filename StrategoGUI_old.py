@@ -1,6 +1,6 @@
 import pygame as pg
 import itertools
-import Stratego
+# import Stratego
 
 BLACK = pg.Color('black')
 GREY = pg.Color('grey')
@@ -35,12 +35,12 @@ class StrategoGUI:
                 else:
                     x, y = int(pg.mouse.get_pos()[0] / tile_size) * tile_size, int(pg.mouse.get_pos()[1] / tile_size) * tile_size
                     if pg.mouse.get_pressed() == LEFT_BUTTON:
-                        self.draw_field(x, y, tile_size, next(self.colors), background)
+                        self.draw_circle(x, y, tile_size, next(self.colors), background)
 
             screen.blit(background, (0, 0))
 
             pg.display.flip()
-            self.clock.tick(100)
+            self.clock.tick(5)
 
         pg.quit()
 
@@ -48,5 +48,7 @@ class StrategoGUI:
         rect = (x, y, size, size)
         pg.draw.rect(background, color, rect, width)
 
+    def draw_circle(self, x, y, size, color, background, width=0):
+        pg.draw.circle(background, color, (x+int(size/2), y+int(size/2)), int(size/2), width)
 
-gui = StrategoGUI(10, 100)
+gui = StrategoGUI(25, 50)

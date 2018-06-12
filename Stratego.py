@@ -1,4 +1,4 @@
-import Player
+from Player import *
 
 class Stratego:
     def __init__(self, size, player1, player2):
@@ -88,6 +88,10 @@ class Stratego:
         else:
             return 0
 
+    def count_points(self, row, col):
+        return self.count_row(row) + self.count_col(col) + \
+                self.count_diagonal_left(row, col) + self.count_diagonal_right(row, col)
+
     def is_full(self):
         for row in self.board:
             for col in row:
@@ -113,8 +117,7 @@ class Stratego:
             except:
                 print("Zła wartość, jeszcze raz.")
 
-        points = self.count_row(row) + self.count_col(col) + \
-                 self.count_diagonal_left(row, col) + self.count_diagonal_right(row, col)
+        points = self.count_points(row, col)
 
         if points > 0:
             player.add_points(points)
