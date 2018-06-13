@@ -1,5 +1,5 @@
 class HumanPlayer:
-    def __init__(self, id, name, color):
+    def __init__(self, id, color, name):
         self.id = id
         self.name = name
         self.color = color
@@ -30,5 +30,15 @@ class HumanPlayer:
 
 
 class CPUPlayer(HumanPlayer):
+    def __init__(self, id, color, name="CPU"):
+        self.id = id
+        self.name = name
+        self.color = color
+        self.points = 0
+
     def move(self, board):
-        return 0, 0
+        print("Gracz nr", self.get_id(), ", Punktów:", self.get_points())
+        for row in range(board.get_size()):
+            for col in range(board.get_size()):
+                if board.get_field(row, col) == 0:
+                    return row, col

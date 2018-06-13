@@ -97,6 +97,12 @@ class Board:
     def get_board(self):
         return self.board
 
+    def get_size(self):
+        return self.size
+
+    def get_field(self, row, col):
+        return self.board[row][col]
+
 
 def create_board(size):
     return [[0 for _ in range(size)] for _ in range(size)]
